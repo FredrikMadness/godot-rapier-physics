@@ -964,6 +964,46 @@ impl RapierPhysicsServerImpl {
         }
     }
 
+    #[cfg(feature = "dim2")]
+    pub(super) fn body_set_shape_layer(
+        &mut self,
+        body: Rid,
+        shape_idx: i32,
+        layer: u32,
+    ) {
+        let physics_data = physics_data();
+        if let Some(body) = physics_data.collision_objects.get_mut(&body) {
+            if let Some(body) = body.get_mut_body() {
+                body.get_mut_base()
+                    .set_shape_layer(
+                        shape_idx as usize,
+                        layer,
+                        &mut physics_data.physics_engine,
+                    );
+            }
+        }
+    }
+
+    #[cfg(feature = "dim2")]
+    pub(super) fn body_set_shape_mask(
+        &mut self,
+        body: Rid,
+        shape_idx: i32,
+        mask: u32,
+    ) {
+        let physics_data = physics_data();
+        if let Some(body) = physics_data.collision_objects.get_mut(&body) {
+            if let Some(body) = body.get_mut_body() {
+                body.get_mut_base()
+                    .set_shape_mask(
+                        shape_idx as usize,
+                        mask,
+                        &mut physics_data.physics_engine
+                    );
+            }
+        }
+    }
+
     pub(super) fn body_remove_shape(&mut self, body: Rid, shape_idx: i32) {
         let physics_data = physics_data();
         if let Some(body) = physics_data.collision_objects.get_mut(&body) {

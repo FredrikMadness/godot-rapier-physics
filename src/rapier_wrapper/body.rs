@@ -275,14 +275,54 @@ impl PhysicsEngine {
                     if let Some(contact_skin) = mat.contact_skin {
                         col.set_contact_skin(contact_skin);
                     }
-                    if let Some(collision_mask) = mat.collision_mask
+                    /*if let Some(collision_mask) = mat.collision_mask
                         && let Some(collision_layer) = mat.collision_layer
                     {
                         col.set_collision_groups(InteractionGroups {
                             memberships: Group::from(collision_layer),
                             filter: Group::from(collision_mask),
                         });
-                    }
+                    }*/
+                }
+            }
+            body.wake_up(true);
+        }
+        self.body_wake_up_connected_rigidbodies(world_handle, body_handle);
+    }
+
+    #[cfg(feature = "dim2")]
+    pub fn body_update_shape_material(
+        &mut self,
+        world_handle: WorldHandle,
+        body_handle: RigidBodyHandle,
+        shape_idx: usize,
+        mat: &Material,
+    ) {
+        if let Some(physics_world) = self.get_mut_world(world_handle)
+            && let Some(body) = physics_world
+                .physics_objects
+                .rigid_body_set
+                .get_mut(body_handle)
+        {
+            if let Some(collider) = body.colliders().get(shape_idx)
+                && let Some(col) = physics_world.physics_objects.collider_set.get_mut(*collider)
+            {
+                if let Some(friction) = mat.friction {
+                    col.set_friction(friction);
+                }
+                if let Some(restitution) = mat.restitution {
+                    col.set_restitution(restitution);
+                }
+                if let Some(contact_skin) = mat.contact_skin {
+                    col.set_contact_skin(contact_skin);
+                }
+                if let Some(collision_mask) = mat.collision_mask
+                    && let Some(collision_layer) = mat.collision_layer
+                {
+                    col.set_collision_groups(InteractionGroups {
+                        memberships: Group::from(collision_layer),
+                        filter: Group::from(collision_mask),
+                    });
                 }
             }
             body.wake_up(true);

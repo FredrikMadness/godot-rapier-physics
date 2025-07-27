@@ -334,6 +334,24 @@ impl IPhysicsServer2DExtension for RapierPhysicsServer2D {
             .body_set_shape_as_one_way_collision(body, shape_idx, enable, margin);
     }
 
+    fn body_set_shape_layer(
+        &mut self,
+        body: Rid,
+        shape_idx: i32,
+        layer: u32,
+    ) {
+        self.implementation.body_set_shape_layer(body, shape_idx, layer);
+    }
+
+    fn body_set_shape_mask(
+        &mut self,
+        body: Rid,
+        shape_idx: i32,
+        mask: u32,
+    ) {
+        self.implementation.body_set_shape_mask(body, shape_idx, mask);
+    }
+
     fn body_remove_shape(&mut self, body: Rid, shape_idx: i32) {
         self.implementation.body_remove_shape(body, shape_idx);
     }

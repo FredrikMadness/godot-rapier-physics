@@ -49,6 +49,8 @@ pub struct CollisionObjectShape {
     pub one_way_collision: bool,
     pub one_way_collision_margin: real,
     pub collider_handle: ColliderHandle,
+    pub layer: u32,
+    pub mask: u32,
 }
 #[derive(Debug, Clone)]
 #[cfg_attr(
@@ -475,6 +477,48 @@ impl RapierCollisionObjectBase {
         if let Some(shape) = self.state.shapes.get_mut(p_idx) {
             shape.one_way_collision = p_one_way_collision;
             shape.one_way_collision_margin = p_margin;
+        }
+    }
+
+    #[cfg(feature = "dim2")]
+    pub fn set_shape_layer(
+        &mut self,
+        p_idx: usize,
+        p_layer: u32,
+        physics_engine: &mut PhysicsEngine,
+    ) {
+        if self.is_valid() {
+            if let Some(shape) = self.state.shapes.get_mut(p_idx) {
+                shape.layer = p_layer;
+                let material = Material::new(shape.layer, shape.mask);
+                physics_engine.body_update_shape_material(
+                    self.state.space_id,
+                    self.state.body_handle,
+                    p_idx,
+                    &material,
+                );
+            }
+        }
+    }
+
+    #[cfg(feature = "dim2")]
+    pub fn set_shape_mask(
+        &mut self,
+        p_idx: usize,
+        p_mask: u32,
+        physics_engine: &mut PhysicsEngine,
+    ) {
+        if self.is_valid() {
+            if let Some(shape) = self.state.shapes.get_mut(p_idx) {
+                shape.mask = p_mask;
+                let material = Material::new(shape.layer, shape.mask);
+                physics_engine.body_update_shape_material(
+                    self.state.space_id,
+                    self.state.body_handle,
+                    p_idx,
+                    &material,
+                );
+            }
         }
     }
 
