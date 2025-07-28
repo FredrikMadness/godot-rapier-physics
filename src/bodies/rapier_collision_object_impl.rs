@@ -65,6 +65,8 @@ impl RapierCollisionObjectBase {
             one_way_collision: false,
             one_way_collision_margin: 0.0,
             collider_handle: ColliderHandle::invalid(),
+            layer: 1,
+            mask: 1
         };
         if !shape.disabled {
             shape.collider_handle = collision_object.create_shape(
