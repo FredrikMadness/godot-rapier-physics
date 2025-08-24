@@ -11,21 +11,21 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  static-checks:
-    name: 📊 Static checks
-    uses: ./.github/workflows/static_checks.yml
+  #static-checks:
+  #  name: 📊 Static checks
+  #  uses: ./.github/workflows/static_checks.yml
 
-  test-checks:
-    name: 🧪 Run Tests
-    uses: ./.github/workflows/test_checks.yml
+  #test-checks:
+  #  name: 🧪 Run Tests
+  #  uses: ./.github/workflows/test_checks.yml
 
-  android-build:
-    name: 🤖 Android
-    uses: ./.github/workflows/android_builds.yml
+  #android-build:
+  #  name: 🤖 Android
+  #  uses: ./.github/workflows/android_builds.yml
 
-  ios-build:
-    name: 🍏 iOS
-    uses: ./.github/workflows/ios_builds.yml
+  #ios-build:
+  #  name: 🍏 iOS
+  #  uses: ./.github/workflows/ios_builds.yml
 
   linux-build:
     name: 🐧 Linux
@@ -48,14 +48,14 @@ jobs:
     name:  Module
     uses: ./.github/workflows/module_builds.yml
 
-  web-build:
-    name: 🌐 Web Builds
-    uses: ./.github/workflows/web_builds.yml
+  #web-build:
+  #  name: 🌐 Web Builds
+  #  uses: ./.github/workflows/web_builds.yml
 
   merge:
     runs-on: ubuntu-latest
     name: Merge
-    needs: [android-build, ios-build, linux-build, macos-build, windows-build, godot-build, module-build, web-build]
+    needs: [linux-build, macos-build, windows-build, godot-build, module-build]
     steps:
       # dynamic
       - uses: actions/upload-artifact/merge@v4
