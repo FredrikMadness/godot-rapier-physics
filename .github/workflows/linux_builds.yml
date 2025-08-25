@@ -15,13 +15,15 @@ jobs:
         features: [{"feature":"simd-stable,serde-serialize,experimental-threads", "name": "simd-parallel"}]
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: blazium-engine/setup-blazium@master
-        name: 🤖 Setup Blazium
-      - name: 🔬 Verify Setup
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Download Godot Editor
+        shell: bash
         run: |
-          Blazium --version
-          echo "GODOT4_BIN=$BLAZIUM_EDITOR" >> $GITHUB_ENV
+          curl -L -o godot.linuxbsd.editor.dev.x86_64.llvm.san https://github.com/FredrikMadness/godot/releases/download/4.4.1-custom.0/godot.linuxbsd.editor.dev.x86_64.llvm.san
+          chmod +x godot.linuxbsd.editor.dev.x86_64.llvm.san
+          GODOT4_BIN_PATH="$(pwd)/godot.linuxbsd.editor.dev.x86_64.llvm.san"
+          echo "GODOT4_BIN=$GODOT4_BIN_PATH" >> $GITHUB_ENV
       - name: "Install dependencies"
         shell: sh
         run: |

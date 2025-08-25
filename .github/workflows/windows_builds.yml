@@ -16,7 +16,8 @@ jobs:
         features: [{"feature":"simd-stable,serde-serialize,experimental-threads", "name": "simd-parallel"}]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: Checkout repository
+        uses: actions/checkout@v4
 
       - name: Download Godot Editor
         shell: bash

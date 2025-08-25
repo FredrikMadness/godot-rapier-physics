@@ -18,13 +18,15 @@ jobs:
         features: [{"feature":"simd-stable,serde-serialize,experimental-threads", "name": "simd-parallel"}]
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: blazium-engine/setup-blazium@master
-        name: 🤖 Setup Blazium
-      - name: 🔬 Verify Setup
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Download Godot Editor
+        shell: bash
         run: |
-          Blazium --version
-          echo "GODOT4_BIN=$BLAZIUM_EDITOR" >> $GITHUB_ENV
+          curl -L -o godot.macos.editor.universal https://github.com/FredrikMadness/godot/releases/download/4.4.1-custom.0/godot.macos.editor.universal
+          chmod +x godot.macos.editor.universal
+          GODOT4_BIN_PATH="$(pwd)/godot.macos.editor.universal"
+          echo "GODOT4_BIN=$GODOT4_BIN_PATH" >> $GITHUB_ENV
       - name: Build
         uses: ./.github/actions/build
         with:
